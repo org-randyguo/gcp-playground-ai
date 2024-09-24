@@ -49,7 +49,7 @@ jobs:
           credentials_json: '${{secrets.SUPERSECRET}}'
       - id: gcloud
         name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v2
         
       - name: Checkout
         uses: actions/checkout@v4
