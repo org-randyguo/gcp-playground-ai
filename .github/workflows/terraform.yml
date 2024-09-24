@@ -1,0 +1,84 @@
+name: "HSBC CI"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  # Common
+  PROJECT_NAME: "ai-playground-436501"
+  # GCP
+  SUPERSECRET: ${{ secrets.SUPERSECRET }}
+
+  # Terraform
+  TF_VAR_gcp_project_id: ${{ vars.TF_VAR_GCP_PROJECT_ID }}
+  TF_VAR_region: ${{ vars.TF_VAR_REGION }}
+ # TF_VAR_sb_location: ${{ vars.TF_VAR_LOCATION }}
+ # TF_VAR_sb_storage_class: ${{ vars.TF_VAR_SB_STORAGE_CLASS }}
+ # TF_VAR_sb_versioning: ${{ vars.TF_VAR_SB_VERSIONING }}
+ # TF_VAR_sb_force_destroy: ${{ vars.TF_VAR_SB_FORCE_DESTROY }}
+ # TF_VAR_sb_uniform_bucket_level_access: ${{ vars.TF_VAR_SB_UNIFORM_BUCKET_LEVEL_ACCESS }}
+ # TF_VAR_top_level_name: ${{ vars.TF_VAR_TOP_LEVEL_NAME }}
+  TF_VAR_project_id: ${{ vars.TF_VAR_PROJECT_ID }}
+  TF_VAR_enable_apis: ${{ vars.TF_VAR_ENABLE_APIS }}
+  # TF_VAR_labels: ${{ vars.TF_VAR_LABELS }}
+  TF_VAR_deletion_protection: ${{ vars.TF_DELETION_PROTECTION }}
+  TF_VAR_frontend_container: ${{ vars.TF_FRONTEND_CONTAINER }}
+  TF_VAR_retrieval_container: ${{ vars.TF_RETRIEVAL_CONTAINER}}
+  TF_VAR_service_account: ${{ vars.TF_SERVICE_ACCOUNT }}
+#  TV_VAR_sb_force_destroy: ${{ vars.SB_FORCE_DESTROY }}
+  TF_VERSION: "1.9.0"
+
+jobs:
+  terraform:
+    name: "TerraformCI"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./project/ai-playground
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+    #  - name: Setup TFLint
+     #   uses: terraform-linters/setup-tflint@v4
+      #  with:
+       #   tflint_version: v0.53.0
+
+      #   - name: Run TFLint
+      #     run: tflint -f compact
+
+      - name: Run Terrascan
+        id: terrascan
+        uses: tenable/terrascan-action@main
+        with:
+          iac_type: "terraform"
+          iac_version: "v14"
+          policy_type: "gcp"
+          only_warn: true
+
+     # - name: Check format
+     #   run: terraform fmt -check -recursive
+
+      - name: Init
+        run: terraform init -no-color
+
+      - name: Check validate
+        run: terraform validate
+
+      - name: Plan
+        run: terraform plan -out ${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan -no-color -input=false
+
+      - name: Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply "${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan"
