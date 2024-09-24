@@ -46,7 +46,7 @@ jobs:
         name: "Authenticate to GCP"
         uses: google-github-actions/auth@v2
         with:
-          credntials_json: '${{secrets.SUPERSECRET}}'
+          credentials_json: '${{secrets.SUPERSECRET}}'
           
       - name: Checkout
         uses: actions/checkout@v4
