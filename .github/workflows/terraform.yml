@@ -47,7 +47,10 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{secrets.SUPERSECRET}}'
-          
+      - id: gcloud
+        name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -85,6 +88,6 @@ jobs:
       - name: Plan
         run: terraform plan -out ${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan -no-color -input=false
 
-      - name: Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply "${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan"
+      # - name: Apply
+      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      #   run: terraform apply "${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan"
