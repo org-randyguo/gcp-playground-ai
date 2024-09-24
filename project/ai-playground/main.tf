@@ -19,7 +19,7 @@ module "project-services" {
   version                     = "15.0.1"
   disable_services_on_destroy = false
 
-  project_id  = var.project_id
+  project  = var.project_id
   
   activate_apis = [
     "aiplatform.googleapis.com",
