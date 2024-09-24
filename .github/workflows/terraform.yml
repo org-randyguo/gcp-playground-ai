@@ -42,14 +42,14 @@ jobs:
         working-directory: ./project/ai-playground
 
     steps:
-      # - id: 'auth'
-      #   name: "Authenticate to GCP"
-      #   uses: google-github-actions/auth@v2
-      #   with:
-      #     credentials_json: '${{secrets.SUPERSECRET}}'
-      # - id: gcloud
-      #   name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v2
+      - id: 'auth'
+        name: "Authenticate to GCP"
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{secrets.SUPERSECRET}}'
+      - id: gcloud
+        name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
         
       - name: Checkout
         uses: actions/checkout@v4
