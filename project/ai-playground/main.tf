@@ -16,10 +16,10 @@
 
 module "project-services" {
   source                      = "terraform-google-modules/project-factory/google//modules/project_services"
-  version                     = "15.0.1"
+  version = "~> 17.0"
   disable_services_on_destroy = false
 
-  project  = var.project_id
+  project_id  = var.project_id
   
   activate_apis = [
     "aiplatform.googleapis.com",
