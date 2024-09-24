@@ -81,13 +81,20 @@ jobs:
 
       - name: Init
         run: terraform init -no-color
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SUPERSECRET }} 
 
       - name: Check validate
         run: terraform validate
-
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SUPERSECRET }} 
+          
       - name: Plan
         run: terraform plan -out ${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan -no-color -input=false
-
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SUPERSECRET }} 
       # - name: Apply
       #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       #   run: terraform apply "${{github.run_id}}-${{github.run_number}}-${{env.PROJECT_NAME}}.plan"
+      # env:
+      #     GOOGLE_CREDENTIALS: ${{ secrets.SUPERSECRET }} 
