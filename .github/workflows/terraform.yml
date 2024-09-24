@@ -8,7 +8,7 @@ on:
 
 env:
   # Common
-  # PROJECT_NAME: "ai-playground-436501"
+  PROJECT_NAME: "ai-playground-436501"
   # GCP
   SUPERSECRET: ${{ secrets.SUPERSECRET }}
 
@@ -21,7 +21,7 @@ env:
  # TF_VAR_sb_force_destroy: ${{ vars.TF_VAR_SB_FORCE_DESTROY }}
  # TF_VAR_sb_uniform_bucket_level_access: ${{ vars.TF_VAR_SB_UNIFORM_BUCKET_LEVEL_ACCESS }}
  # TF_VAR_top_level_name: ${{ vars.TF_VAR_TOP_LEVEL_NAME }}
-  # TF_VAR_project_id: ${{ vars.TF_VAR_PROJECT_ID }}
+  # TF_VAR_project_id: "ai-playground-436501"
   # TF_VAR_enable_apis: ${{ vars.TF_VAR_ENABLE_APIS }}
   # TF_VAR_labels: ${{ vars.TF_VAR_LABELS }}
   # TF_VAR_deletion_protection: ${{ vars.TF_DELETION_PROTECTION }}
