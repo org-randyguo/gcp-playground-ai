@@ -42,6 +42,12 @@ jobs:
         working-directory: ./project/ai-playground
 
     steps:
+      - id: 'auth'
+        name: "Authenticate to GCP"
+        uses: "google-github-actions/auth@0.4.0"
+        with:
+          credntials_json: '${{secrets.SUPERSECRET}}'
+          
       - name: Checkout
         uses: actions/checkout@v4
 
